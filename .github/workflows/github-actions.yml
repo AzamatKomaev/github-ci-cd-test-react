@@ -25,4 +25,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: ls
-      - run: echo "Connect to ${{secrets.SSH_HOST}}"
+      - run: echo "Connect to ssh"
+      - run: ssh ${{SSH_USER}}@${{SSH_HOST}}
