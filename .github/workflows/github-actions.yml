@@ -11,3 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Start deploying"
+      - run: touch main.py
+      - run: ls
