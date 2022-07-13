@@ -16,8 +16,8 @@ jobs:
           then
             echo "Got secret"
           fi
-      env:
-        SSH_USER: ${{ secrets.SSH_USER }}
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
 
   build:
     runs-on: ubuntu-18.04
