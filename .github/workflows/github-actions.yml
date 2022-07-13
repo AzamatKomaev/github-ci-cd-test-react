@@ -1,9 +1,5 @@
 name: GitHub Actions Demo
 
-env:
-  SSH_HOST: ${{ secrets.SSH_HOST }}
-  SSH_USER: ${{ secrets.SSH_USER }}
-
 on:
   push:
     branches: [ master ]
@@ -15,6 +11,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v3
+      - name: Check SSH_USER.
       - run: |
           if [ "$SSH_USER" -eq "root" ]
           then
