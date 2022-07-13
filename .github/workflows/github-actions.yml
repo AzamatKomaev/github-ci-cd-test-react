@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - run: |
-        if [ "$SOME_KEY" -eq "150" ]
+        if [ "$SSH_USER" -eq "root" ]
         then
           echo "Got secret"
         fi
       env:
-        SOME_KEY: ${{ secrets.SOME_KEY }}
+        SSH_USER: ${{ secrets.SSH_USER }}
 
   build:
     runs-on: ubuntu-18.04
