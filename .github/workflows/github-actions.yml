@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - run: |
-        if [ "$SSH_USER" -eq "root" ]
-        then
-          echo "Got secret"
-        fi
+          if [ "$SSH_USER" -eq "root" ]
+          then
+            echo "Got secret"
+          fi
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
 
