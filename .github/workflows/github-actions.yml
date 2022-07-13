@@ -14,7 +14,13 @@ jobs:
   test:
     runs-on: ubuntu-18.04
     steps:
-      - run: echo "${{secrets.SOME_KEY}}"
+      - run: |
+        if [ "$SOME_KEY" -eq "150" ]
+        then
+          echo "Got secret"
+        fi
+      env:
+        SOME_KEY: ${{ secrets.SOME_KEY }}
 
   build:
     runs-on: ubuntu-18.04
