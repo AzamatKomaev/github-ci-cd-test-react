@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Check SSH_USER.
         run: |
-          if [ "$SSH_USER" == "root" ]
+          if [ "$SSH_USER" == "root222" ]
           then
             echo "Got secret"
           fi
