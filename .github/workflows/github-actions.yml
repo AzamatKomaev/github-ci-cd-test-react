@@ -10,13 +10,12 @@ jobs:
   test:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v3
       - name: Check SSH_USER.
       - run: |
-          if [ "$SSH_USER" -eq "root" ]
-          then
-            echo "Got secret"
-          fi
+        if [ "$SSH_USER" == "root" ]
+        then
+          echo "Got secret"
+        fi
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
 
