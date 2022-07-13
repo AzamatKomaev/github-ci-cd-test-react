@@ -3,6 +3,7 @@ name: GitHub Actions Demo
 env:
   SSH_HOST: ${{ secrets.SSH_HOST }}
   SSH_USER: ${{ secrets.SSH_USER }}
+  SSH_KEY: ${{ secrets.SSH_KEY }}
 
 on:
   push:
@@ -11,11 +12,6 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
-    runs-on: ubuntu-18.04
-    steps:
-      - run: echo "$SSH_USER"
-
   build:
     runs-on: ubuntu-18.04
     strategy:
@@ -35,6 +31,10 @@ jobs:
     needs: [build]
     runs-on: ubuntu-18.04
     steps:
-      - run: ls
-      - run: echo "Connect to ssh"
-      - run: ssh $SSH_USER@$SSH_HOST
+      - run: echo "Adding ssh key..."
+      - run: 'which ssh-agent || ( apt-get install -qq openssh-client )'
+      - run: eval $(ssh-agent -s)
+      - run: ssh-add <(echo "${{ SSH_KEY }}")
+      - run: mkdir -p ~/.ssh
+      - run: '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+      - run: echo "Key added."
