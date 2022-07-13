@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Check SSH_USER.
-      - run: |
-        if [ "$SSH_USER" == "root" ]
-        then
-          echo "Got secret"
-        fi
+        run: |
+          if [ "$SSH_USER" == "root" ]
+          then
+            echo "Got secret"
+          fi
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
 
