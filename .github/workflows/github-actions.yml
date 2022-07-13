@@ -11,6 +11,12 @@ on:
     branches: [ master ]
 
 jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Test
+      run: echo "${{secrets.SOME_KEY}}"
+
   build:
     runs-on: ubuntu-18.04
     strategy:
