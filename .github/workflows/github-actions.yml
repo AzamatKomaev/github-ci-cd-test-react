@@ -35,5 +35,5 @@ jobs:
       - run: mkdir "$HOME/.ssh"
       - run: echo "$SSH_KEY" > "$HOME/.ssh/key"
       - run: chmod 600 "$HOME/.ssh/key"
-      - run: rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete ./build $SSH_USER@$SSH_HOST:/var/www/api.voiceofossetia.ru/client/
+      - run: rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete ./build $SSH_USER@$SSH_HOST:/var/www/voiceofossetia.ru/
       - run: echo "Deploy finished."
