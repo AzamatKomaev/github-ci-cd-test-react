@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: 'which ssh-agent || ( apt-get install -qq openssh-client )'
       - run: eval $(ssh-agent)
-      - run: ssh-add <(echo "${{ secrets.SSH_KEY }}")
+      - run: ssh-add
       - run: mkdir -p ~/.ssh
       - run: '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
       - run: scp ./build ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/voiceofossetia.ru
