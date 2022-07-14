@@ -25,11 +25,11 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - run: 'which ssh-agent || ( apt-get install -qq openssh-client )'
+      - run: which ssh-agent || ( apt-get install -qq openssh-client )
       - run: |
           eval "$(ssh-agent -s)"
           echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add -
       - run: mkdir -p ~/.ssh
-      - run: '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+      - run: echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
       - run: scp ./build ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/voiceofossetia.ru
       - run: echo "Deploy finished."
