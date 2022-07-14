@@ -1,5 +1,9 @@
 name: GitHub Actions Demo
 
+env:
+  SSH_USER: ${{ secrets.SSH_USER }}
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+
 on:
   push:
     branches: [ master ]
@@ -7,41 +11,41 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  build:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Staring Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: install modules
+        run: npm install
+      - name: build project
+        run: npm run build
+  deploy:
+    needs: [build]
     runs-on: ubuntu-18.04
     steps:
-      - name: Check SSH_USER.
-        run: |
-          if [ "$SSH_USER" == "root222" ]
-          then
-            echo "Got secret"
-          fi
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-
-#  build:
-#    runs-on: ubuntu-18.04
-#    strategy:
-#      matrix:
-#        node-version: [ 16.x ]
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Staring Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#      - name: install modules
-#        run: npm install
-#      - name: build project
-#        run: npm run build
-#  deploy:
-#    needs: [build]
-#    runs-on: ubuntu-18.04
-#    steps:
-#      - run: echo "Adding ssh key..."
-#      - run: 'which ssh-agent || ( apt-get install -qq openssh-client )'
-#      - run: eval $(ssh-agent -s)
-#      - run: ssh-add <(echo "${{ secrets.SSH_KEY }}")
-#      - run: mkdir -p ~/.ssh
-#      - run: '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-#      - run: echo "Key added."
+      - name: Adding ssh key
+      - run: echo "Adding ssh key..."
+      - run: 'which ssh-agent || ( apt-get install -qq openssh-client )'
+      - run: eval $(ssh-agent -s)
+      - run: ssh-add <(echo "${{ secrets.SSH_KEY }}")
+      - run: mkdir -p ~/.ssh
+      - run: '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+      - run: echo "Key added."
+      - name: Deleting build folder.
+        run: ssh $SSH_USER@$SSH_HOST "cd /var/www/api.voiceofossetia.ru/client && rm -rf build"
+      - name: Deleting public folder
+        run: ssh $SSH_USER@$SSH_HOST "cd /var/www/api.voiceofossetia.ru/client && rm -rf public"
+      - name: Deleting node_modules
+        run: ssh $SSH_USER@$SSH_HOST "cd /var/www/api.voiceofossetia.ru/client && rm -rf node_modules"
+      - name: Moving build folder from local machine on remote
+        run: scp /build $SSH_USER@$SSH_HOST:/var/www/api.voiceofossetia.ru/client
+      - name: Moving public folder from local machine on remote
+        run: scp /public $SSH_USER@$SSH_HOST:/var/www/api.voiceofossetia.ru/client
+      - run: echo "Deploy finished."
