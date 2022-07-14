@@ -34,7 +34,7 @@ jobs:
         run: echo "Adding ssh key..."
       - run: 'which ssh-agent || ( apt-get install -qq openssh-client )'
       - run: eval $(ssh-agent -s)
-      - run: echo "$SSH_KEY" > token.pub && ssh-add ./token.pub
+      - run: ssh-add <(echo "$SSH_KEY")
       - run: mkdir -p ~/.ssh
       - run: '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
       - run: echo "Key added."
