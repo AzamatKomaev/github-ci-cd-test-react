@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Adding ssh key
-      - run: echo "Adding ssh key..."
+        run: echo "Adding ssh key..."
       - run: 'which ssh-agent || ( apt-get install -qq openssh-client )'
       - run: eval $(ssh-agent -s)
       - run: ssh-add <(echo "${{ secrets.SSH_KEY }}")
