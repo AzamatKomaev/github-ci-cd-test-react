@@ -3,6 +3,7 @@ name: GitHub Actions Demo
 env:
   SSH_USER: ${{ secrets.SSH_USER }}
   SSH_HOST: ${{ secrets.SSH_HOST }}
+  SSH_KEY: ${{ secrets.SSH_KEY }}
 
 on:
   push:
