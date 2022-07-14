@@ -25,9 +25,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - run: set -eu
-      - run: mkdir "$HOME/.ssh"
-      - run: echo "${{ secrets.SSH_KEY }}" > "$HOME/.ssh/key"
-      - run: chmod 600 "$HOME/.ssh/key"
+      - run: 'which ssh-agent || ( apt-get install -qq openssh-client )'
+      - run: eval $(ssh-agent -s)
+      - run: ssh-add <(echo "${{ secrets.SSH_KEY }}")
+      - run: mkdir -p ~/.ssh
+      - run: '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
       - run: scp ./build ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/voiceofossetia.ru
       - run: echo "Deploy finished."
