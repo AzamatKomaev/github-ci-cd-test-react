@@ -33,6 +33,7 @@ jobs:
           eval "$(ssh-agent -s)"
 #          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add -
       - run: | 
+          ls
           mkdir -p ~/.ssh
           ssh-keyscan ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
