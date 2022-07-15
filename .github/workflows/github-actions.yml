@@ -47,5 +47,5 @@ jobs:
           ssh-keyscan ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.SSH_KEY }}"
-      - run:  scp  ./build ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/voiceofossetia.ru
+      - run:  scp -r ./build ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/voiceofossetia.ru
       - run: echo "Deploy finished."
