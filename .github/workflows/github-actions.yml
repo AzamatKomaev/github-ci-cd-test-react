@@ -39,6 +39,7 @@ jobs:
       - run: ls
       - run: 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
       - run: |
+          netstat -tulpn
           eval "$(ssh-agent -s)"
 #          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add -
       - run: | 
